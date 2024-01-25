@@ -4,6 +4,7 @@ namespace App\Telegram\Commands;
 
 use Telegram\Bot\Actions;
 use Telegram\Bot\Commands\Command;
+use Telegram\Bot\Keyboard\Keyboard;
 
 /**
  * This command can be triggered in two ways:
@@ -11,9 +12,13 @@ use Telegram\Bot\Commands\Command;
  */
 class StartCommand extends Command
 {
+
     protected string $name = 'start';
+
     protected array $aliases = ['join'];
+
     protected string $description = 'Start Command to get you started';
+
     protected string $pattern = '{username}
     {age: \d+}';
 
@@ -25,12 +30,12 @@ class StartCommand extends Command
         # (optional) fallback to username from Update object as the default.
         $username = $this->argument(
             'username',
-            $message->from->first_name . ' ' . $message->last_name
+            $message->from->first_name . ' ' . $message->from->last_name
         );
 
         $this->replyWithMessage(
             [
-            'text' => "Здравствуйте {$username}! Welcome to our bot, Here are our available commands:"
+                'text' => "Здравствуйте {$username}! {$message->chat->id} Commands:"
             ]
         );
 
@@ -45,12 +50,36 @@ class StartCommand extends Command
             $response .= sprintf('/%s - %s' . PHP_EOL, $name, $command->getDescription());
         }
 
+
+        # Get all the registered commands.
+        $commands = $this->getTelegram()->getCommands();
+
+        $response = '';
+        foreach ($commands as $name => $command) {
+            $response .= sprintf('/%s - %s' . PHP_EOL, $name, $command->getDescription());
+        }
+
         $this->replyWithMessage(['text' => $response]);
 
-        if($this->argument('age', 0) >= 18) {
-            $this->replyWithMessage(['text' => 'Test bot']);
-        } else {
-            $this->replyWithMessage(['text' => 'Sorry, you are not eligible to access premium membership yet!']);
-        }
+        $keyboard = Keyboard::make()->inline()
+            ->row(
+                    [
+                    Keyboard::inlineButton(['text' => 'Button 1', 'callback_data' => 'your_callback_data'])
+                    ]
+            );
+
+        $this->replyWithMessage([
+                                    'text' => 'This keyboard feature is awesome!',
+                                    'reply_markup' => $keyboard
+                                ]);
+
+
+        // $this->replyWithMessage(['text' => print_r($response, true)]);
+
+        /*        if ($this->argument('age', 0) >= 18) {
+                    $this->replyWithMessage(['text' => 'Test bot']);
+                } else {
+                    $this->replyWithMessage(['text' => 'Test bot']);
+                }*/
     }
 }

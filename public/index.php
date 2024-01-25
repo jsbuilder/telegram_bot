@@ -1,6 +1,7 @@
 <?php
 
 use Telegram\Bot\BotsManager;
+use Telegram\Bot\Keyboard\Keyboard;
 
 $config = include '../config.php';
 
