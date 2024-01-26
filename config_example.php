@@ -9,7 +9,7 @@ return [
     'bots' => [
         'mybot' => [
             'token'       => '',
-            'webhook_url' => 'https://kravnet.asuscomm.com:88/webhook.php',
+            'webhook_url' => 'https://server:port/webhook.php',
             'commands' => [
                 App\Telegram\Commands\StartCommand::class,
                 App\Telegram\Commands\HelpCommand::class,
