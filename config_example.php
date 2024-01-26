@@ -11,7 +11,11 @@ return [
             'token'       => '',
             'webhook_url' => 'https://kravnet.asuscomm.com:88/webhook.php',
             'commands' => [
-                App\Telegram\Commands\StartCommand::class
+                App\Telegram\Commands\StartCommand::class,
+                App\Telegram\Commands\HelpCommand::class,
+                App\Telegram\Commands\TestCommand::class,
+                App\Telegram\Commands\TestButton1Command::class,
+                App\Telegram\Commands\MessageCommand::class
             ]
         ],
         'default' => 'mybot'
