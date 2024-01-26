@@ -48,8 +48,8 @@ class TestButton1Command extends Command
             $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
             //Recipients
-            $mail->setFrom('rfatuk@yandex.ru', 'Mailer');
-            $mail->addAddress('jsbuilder@inbox.ru', 'Joe User');     //Add a recipient
+            $mail->setFrom($config['mail']['username'], 'Mailer');
+            $mail->addAddress($config['mail']['mail_to'], 'User');     //Add a recipient
             //Attachments
             // $mail->addAttachment('/var/tmp/file.tar.gz');         //Add attachments
             // $mail->addAttachment('/tmp/image.jpg', 'new.jpg');    //Optional name
@@ -64,7 +64,7 @@ class TestButton1Command extends Command
 
             $this->replyWithMessage(
                 [
-                    'text' => "Message has been sent"
+                    'text' => "Message has been sent to: " . $config['mail']['mail_to']
                 ]
             );
         } catch (Exception $e) {

@@ -15,6 +15,12 @@ return [
             ]
         ],
         'default' => 'mybot'
+    ],
+    'mail' => [
+        'host' => 'smtp.yandex.ru',
+        'username'=> 'ASASaSA@yandex.ru',
+        'password'=> 'ASASaS',
+        'mail_to'=> 'ASaSASa@inbox.ru'
     ]
 ];
 
