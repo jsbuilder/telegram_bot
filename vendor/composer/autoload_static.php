@@ -41,6 +41,7 @@ class ComposerStaticInitfc8f43f689382759ff360670b692f94d
             'Psr\\EventDispatcher\\' => 20,
             'Psr\\Container\\' => 14,
             'Psr\\Clock\\' => 10,
+            'PHPMailer\\PHPMailer\\' => 20,
         ),
         'L' => 
         array (
@@ -121,6 +122,10 @@ class ComposerStaticInitfc8f43f689382759ff360670b692f94d
         'Psr\\Clock\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/clock/src',
+        ),
+        'PHPMailer\\PHPMailer\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
         ),
         'League\\Event\\' => 
         array (
