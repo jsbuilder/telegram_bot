@@ -33,46 +33,31 @@ class StartCommand extends Command
             $message->from->first_name . ' ' . $message->from->last_name
         );
 
+        $this->replyWithMessage([
+                                    'text' => "Мы имеем данные по Вам\r\n" . print_r($message, true)
+                                ]);
+
         $this->replyWithMessage(
             [
-                'text' => "Здравствуйте {$username}! {$message->chat->id} Commands:"
+                'text' => "Здравствуйте {$username}! {$message->chat->id} \r\n"
+
             ]
         );
 
         # This will update the chat status to "typing..."
         $this->replyWithChatAction(['action' => Actions::TYPING]);
 
-        # Get all the registered commands.
-        $commands = $this->getTelegram()->getCommands();
-
-        $response = '';
-        foreach ($commands as $name => $command) {
-            $response .= sprintf('/%s - %s' . PHP_EOL, $name, $command->getDescription());
-        }
-
-
-        # Get all the registered commands.
-        $commands = $this->getTelegram()->getCommands();
-
-        $response = '';
-        foreach ($commands as $name => $command) {
-            $response .= sprintf('/%s - %s' . PHP_EOL, $name, $command->getDescription());
-        }
-
-        $this->replyWithMessage(['text' => $response]);
-
         $keyboard = Keyboard::make()->inline()
             ->row(
                     [
-                    Keyboard::inlineButton(['text' => 'Button 1', 'callback_data' => 'your_callback_data'])
+                    Keyboard::inlineButton(['text' => 'Button 1', 'callback_data' => 'test_button1'])
                     ]
             );
 
         $this->replyWithMessage([
-                                    'text' => 'This keyboard feature is awesome!',
+                                    'text' => 'Test Button',
                                     'reply_markup' => $keyboard
                                 ]);
-
 
         // $this->replyWithMessage(['text' => print_r($response, true)]);
 
