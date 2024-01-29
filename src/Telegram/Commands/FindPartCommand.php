@@ -9,6 +9,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 use App\Mail\Sender;
+use Telegram\Bot\Keyboard\Keyboard;
 
 /**
  * This command can be triggered in two ways:
@@ -27,11 +28,24 @@ class FindPartCommand extends Command implements MainMenuButtonInterface
         # This will update the chat status to "typing..."
         $this->replyWithChatAction(['action' => Actions::TYPING]);
 
+        $btn = Keyboard::button([
+                                                          'text' => 'Share my phone number',
+                                                          'request_contact' => true,
+                                                          'callback_data' => 'request_contact'
+                                                      ]);
+        $keyboard = Keyboard::make([
+                                                             'keyboard' => [[$btn]],
+                                                             'resize_keyboard' => true,
+                                                             'one_time_keyboard' => true,
+                                                         ]);
+        
+
         $this->replyWithMessage(
             [
                 'text' => "Введите номер телефона в формате 89990009999 без пробелов и дефисов.\n"
                     . "Вам перезвонит наш специалист для подбора запчастей.\n"
-                    . "Мы не передаём номер третьим лицам"
+                    . "Мы не передаём номер третьим лицам",
+                'reply_markup' => $keyboard
             ]
         );
 

@@ -2,7 +2,6 @@
 
 namespace App\Telegram\Commands;
 
-use App\Telegram\Menu\MainMenuButtonInterface;
 use Telegram\Bot\Actions;
 use Telegram\Bot\Commands\Command;
 
@@ -10,25 +9,26 @@ use Telegram\Bot\Commands\Command;
  * This command can be triggered in two ways:
  * /start and /join due to the alias.
  */
-class HelpCommand extends Command implements MainMenuButtonInterface
+class RequestContactCommand extends Command
 {
 
-    protected string $name = 'help';
+    protected string $name = 'request_contact';
 
-    protected string $description = 'Справка';
+    protected string $description = 'Any message';
 
     public function handle()
     {
+        $message = $this->getUpdate()->getMessage();
+
         # This will update the chat status to "typing..."
         $this->replyWithChatAction(['action' => Actions::TYPING]);
 
         $this->replyWithMessage(
             [
                 'text' =>
-                '<a href="http://www.example.com/">“Справка” в интернет магазине</a>',
-                'parse_mode' => 'HTML'
+                    "Мы имеем данные по Вам\r\n" . print_r($message, true) . "\r\n" .
+                    'Вы написали: ' . print_r($message->text, true)
             ]
         );
-
     }
 }
