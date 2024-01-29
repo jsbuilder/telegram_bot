@@ -1,37 +1,25 @@
 <?php
-namespace App\Telegram\Commands;
 
-use Telegram\Bot\Actions;
-use Telegram\Bot\Commands\Command;
+namespace App\Mail;
+
+use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
-use PHPMailer\PHPMailer\Exception;
 
 /**
- * This command can be triggered in two ways:
- * /start and /join due to the alias.
+ *
  */
-class TestButton1Command extends Command
+class Sender
 {
 
-    protected string $name = 'test_button1';
-
-    protected string $description = 'Test Button1';
-
-    public function handle()
+    /**
+     * @param $message
+     *
+     * @return bool
+     */
+    public function send($message = ''): bool
     {
         $config = $GLOBALS['config'];
-        $message = $this->getUpdate()->getMessage();
-        # This will update the chat status to "typing..."
-        $this->replyWithChatAction(['action' => Actions::TYPING]);
-
-        $this->replyWithMessage(
-            [
-                'text' => "мы имеем данные по вам\r\n"
-                    . print_r($message, true)
-                    . "\r\nВы нажали button1"
-            ]
-        );
 
         //Create an instance; passing `true` enables exceptions
         $mail = new PHPMailer(true);
@@ -57,22 +45,14 @@ class TestButton1Command extends Command
             //Content
             $mail->isHTML(true);                                  //Set email format to HTML
             $mail->Subject = 'WebHoook';
-            $mail->Body    =  print_r($message, true);
+            $mail->Body    = print_r($message, true);
             $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
 
             $mail->send();
 
-            $this->replyWithMessage(
-                [
-                    'text' => "Message has been sent to: " . $config['mail']['mail_to']
-                ]
-            );
+            return true;
         } catch (Exception $e) {
-            $this->replyWithMessage(
-                [
-                    'text' => "Message could not be sent. Mailer Error: {$mail->ErrorInfo}"
-                ]
-            );
+            return false;
         }
     }
 }

@@ -2,9 +2,9 @@
 
 namespace App\Telegram\Commands;
 
+use App\Telegram\Menu\Buttons;
 use Telegram\Bot\Actions;
 use Telegram\Bot\Commands\Command;
-use Telegram\Bot\Keyboard\Keyboard;
 
 /**
  * This command can be triggered in two ways:
@@ -15,12 +15,7 @@ class StartCommand extends Command
 
     protected string $name = 'start';
 
-    protected array $aliases = ['join'];
-
-    protected string $description = 'Start Command to get you started';
-
-    protected string $pattern = '{username}
-    {age: \d+}';
+    protected string $description = 'Нажмите СТАРТ.';
 
     public function handle()
     {
@@ -33,31 +28,19 @@ class StartCommand extends Command
             $message->from->first_name . ' ' . $message->from->last_name
         );
 
-        $this->replyWithMessage([
-                                    'text' => "Мы имеем данные по Вам\r\n" . print_r($message, true)
-                                ]);
-
-        $this->replyWithMessage(
-            [
-                'text' => "Здравствуйте {$username}! {$message->chat->id} \r\n"
-
-            ]
-        );
-
         # This will update the chat status to "typing..."
         $this->replyWithChatAction(['action' => Actions::TYPING]);
 
-        $keyboard = Keyboard::make()->inline()
-            ->row(
-                    [
-                    Keyboard::inlineButton(['text' => 'Button 1', 'callback_data' => 'test_button1'])
-                    ]
-            );
-
-        $this->replyWithMessage([
-                                    'text' => 'Test Button',
-                                    'reply_markup' => $keyboard
-                                ]);
+        $buttons  = new Buttons();
+        $keyboard = $buttons->getByCommands($this->getTelegram()->getCommands());
+        $this->replyWithMessage(
+            [
+                'text'         =>
+                    "Здравствуйте! Я бот AUTO3N.\n"
+                    . "Выберите интересующий Вас раздел",
+                'reply_markup' => $keyboard
+            ]
+        );
 
         // $this->replyWithMessage(['text' => print_r($response, true)]);
 

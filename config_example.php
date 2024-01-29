@@ -16,7 +16,7 @@ return [
                 App\Telegram\Commands\StartCommand::class,
                 App\Telegram\Commands\HelpCommand::class,
                 App\Telegram\Commands\TestCommand::class,
-                App\Telegram\Commands\TestButton1Command::class,
+                App\Telegram\Commands\FindPartCommand::class,
                 App\Telegram\Commands\MessageCommand::class
             ]
         ],
